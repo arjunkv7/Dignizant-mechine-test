@@ -1,22 +1,6 @@
 const express = require("express");
 const router = express.Router();
-let { addProduct, editProduct, deleteProduct, upload, storeImages } = require("../controller/productController")
-
-router.post("/addProduct", async (req, res) => {
-    try {
-        let addedProduct = await addProduct(req);
-        res.json({
-            message: "Product added",
-            productDetails: addedProduct
-        })
-    }
-    catch (err) {
-        console.log(err);
-        res.json({
-            message: err.message
-        })
-    }
-});
+let { addProduct, editProduct, deleteProduct, upload } = require("../controller/productController");
 
 router.put("/editProduct", async (req, res) => {
     try {
@@ -49,9 +33,10 @@ router.delete("/delete", async (req, res) => {
     }
 })
 
-router.post("/uploadImages", upload.array("files"),async (req, res) => {
+router.post("/addProduct", upload.array("files"),async (req, res) => {
     try {
-        let updatedProduct = await storeImages(req);
+        let updatedProduct = await addProduct(req);
+        console.log(req.body.product_id)
         res.json({
             message: "Image uploaded",
             productDetails: updatedProduct

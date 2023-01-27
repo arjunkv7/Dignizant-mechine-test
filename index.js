@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
-const config = require("./config")
+const config = require("./config").config
 
 const port = config.PORT || 3030;
 
@@ -11,9 +11,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/", express.static(path.join(__dirname, "public")));
 
+mongoose.set('strictQuery', true);
 mongoose.connect(config.DBURL,
     {
-        keepAlive: 1,
+        keepAlive: true,
         connectTimeoutMS: 30000,
     },(err)=> {
     if(err)console.log(err)

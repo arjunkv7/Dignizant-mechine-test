@@ -17,11 +17,20 @@ let upload = multer({ storage: storage });
 let addProduct = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+
+            let images = [];
+            await req.files.map(e=>{
+                images.push(e.filename)
+            })
+            console.log(req.body.product_id)
+
             let addedProduct = await productModel({
                 name: req.body.name,
                 price: req.body.price,
+                stock:req.body.stock,
                 discount_price: req.body.discount_price,
                 description: req.body.description,
+                images:images
             }).save()
             resolve(addedProduct);
         }
@@ -65,25 +74,7 @@ let deleteProduct = (req) => {
     })
 }
 
-let storeImages = (req)=>{
-    return new Promise(async(resolve,reject)=>{
-        try{
-            let images = [];
-            await req.files.map(e=>{
-                images.push(e.filename)
-            })
-            console.log(req.body.product_id)
-            let editedProduct = await productModel.findByIdAndUpdate(req.body.product_id,{
-                images:images
-            },{new:true})
-            resolve(editedProduct);
-        }
-        catch(err){
-            console.log(err);
-            reject(err);
-        }
-    })
-}
+
 
 
 module.exports = {
@@ -91,5 +82,5 @@ module.exports = {
     editProduct,
     deleteProduct,
     upload,
-    storeImages
+    
 }

@@ -8,6 +8,8 @@ let userSchema = new schema({
     username:String,
     mobile_number: String,
     password: String,
+    email:String,
+    OTP:String,
     date: {
         type: String,
         default: moment().format("YYYY-MM-DD")

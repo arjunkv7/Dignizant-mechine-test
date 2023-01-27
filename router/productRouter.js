@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+let jwtauth = require("../lib/jwtlib").jwtauth;
 let { addProduct, editProduct, deleteProduct, upload } = require("../controller/productController");
 
-router.put("/editProduct", async (req, res) => {
+router.put("/editProduct",jwtauth, async (req, res) => {
     try {
         let editedProduct = await editProduct(req);
         res.json({
@@ -18,7 +19,7 @@ router.put("/editProduct", async (req, res) => {
     }
 });
 
-router.delete("/delete", async (req, res) => {
+router.delete("/delete",jwtauth, async (req, res) => {
     try {
         let result = await deleteProduct(req);
         res.json({

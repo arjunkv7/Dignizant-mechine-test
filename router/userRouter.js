@@ -1,6 +1,7 @@
 const express = require("express");
 let { registerUser,doLogin,editUser,sendPasswordResetOtp,resetPassword } = require("../controller/userController")
 let router = express.Router();
+let jwtauth = require("../lib/jwtlib");
 
 router.post("/register", async (req, res) => {
     try {

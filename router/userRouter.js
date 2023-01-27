@@ -1,7 +1,7 @@
 const express = require("express");
 let { registerUser,doLogin,editUser,sendPasswordResetOtp,resetPassword } = require("../controller/userController")
 let router = express.Router();
-let jwtauth = require("../lib/jwtlib");
+let jwtauth = require("../lib/jwtlib").jwtauth;
 
 router.post("/register", async (req, res) => {
     try {
@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
     }
 })
 
-router.put("/edit",async (req,res)=>{
+router.put("/edit",jwtauth ,async (req,res)=>{
     try{
         let editedUser = await editUser(req);
         res.json({

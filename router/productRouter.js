@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 let jwtauth = require("../lib/jwtlib").jwtauth;
-let { addProduct, editProduct, deleteProduct, upload } = require("../controller/productController");
+let { addProduct, editProduct, deleteProduct, upload ,listAllProducts} = require("../controller/productController");
 
-router.put("/editProduct",jwtauth, async (req, res) => {
+router.put("/editProduct",jwtauth,upload.array("files"), async (req, res) => {
     try {
         let editedProduct = await editProduct(req);
         res.json({
@@ -34,7 +34,7 @@ router.delete("/delete",jwtauth, async (req, res) => {
     }
 })
 
-router.post("/addProduct", upload.array("files"),async (req, res) => {
+router.post("/addProduct",jwtauth, upload.array("files"),async (req, res) => {
     try {
         let updatedProduct = await addProduct(req);
         console.log(req.body.product_id)
@@ -47,6 +47,19 @@ router.post("/addProduct", upload.array("files"),async (req, res) => {
         console.log(err);
         res.json({
             message: err.message
+        })
+    }
+})
+
+router.get("/allProducts",jwtauth,async(req,res)=>{
+    try{
+        let products = await listAllProducts();
+        res.json(products)
+    }
+    catch(err){
+        console.log(err);
+        res.json({
+            message:err.message
         })
     }
 })
